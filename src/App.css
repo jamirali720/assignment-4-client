@@ -1,0 +1,7 @@
+.swiper-button-next { color: red; }
+.swiper-button-prev{ color: red; }
+
+
+.swiper.navigation.prevEl{
+    color : green
+}
