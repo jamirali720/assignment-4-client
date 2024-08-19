@@ -1,23 +1,37 @@
-import { configureStore } from '@reduxjs/toolkit'
-// Or from '@reduxjs/toolkit/query/react'
-import { setupListeners } from '@reduxjs/toolkit/query'
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-import {productsApi} from './features/productsSlice'
-import cartSlice from './features/cartSlice'
+import cartSlice from "./features/cartSlice";
+import { productsApi } from "./api/productsApi";
+import filterSlice from "./features/filterSlice";
+import storageSession from "redux-persist/lib/storage/session";
+import { FLUSH, persistReducer,PAUSE, PERSIST, PURGE, REGISTER, persistStore, REHYDRATE } from "redux-persist";
+import { ordersApi } from "./api/orderApi";
 
+
+const persistConfig = {
+  key: "cart",
+  storage: storageSession,
+  blacklist: ["filter", ordersApi.reducerPath], // Exclude filter slice from persisting
+};
+const rootReducer = combineReducers({
+  cart: cartSlice,
+  filter: filterSlice,  
+  [productsApi.reducerPath]: productsApi.reducer,
+  [ordersApi.reducerPath]: ordersApi.reducer,
+});
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    // Add the generated reducer as a specific top-level slice
-    [productsApi.reducerPath]: productsApi.reducer,
-    cart: cartSlice,
-  },
-  // Adding the api middleware enables caching, invalidation, polling,
-  // and other useful features of `rtk-query`.
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(productsApi.middleware),
-})
+  reducer:persistedReducer,
 
-// optional, but required for refetchOnFocus/refetchOnReconnect behaviors
-// see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
-setupListeners(store.dispatch)
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat([productsApi.middleware, ordersApi.middleware]),
+});
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;
+export const persistor = persistStore(store);

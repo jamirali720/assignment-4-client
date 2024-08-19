@@ -1,120 +1,236 @@
-import React, { useEffect, useState } from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import { toast } from 'react-toastify';
+import { Fragment, useEffect } from "react";
 
-import { useForm, SubmitHandler } from "react-hook-form"
-import { Inputs } from 'types/types';
+import { useForm, SubmitHandler } from "react-hook-form";
+import { TProduct, IErrorResponse as IErrorResponse } from "../types/types";
 
 
 
-const categories  = [
-    {
-      label: "Apple",
-      value: "apple",
-    },
-    {
-      label: "Mango",
-      value: "mango",
-    },
-    {
-      label: "Banana",
-      value: "banana",
-    },
-    {
-      label: "Pineapple",
-      value: "pineapple",
-    },
-  ];
+import { FaCloudUploadAlt } from "react-icons/fa";
+
+import { toast } from "sonner";
+import { useCreateSportsMutation } from "../redux/api/productsApi";
+import { categories } from "../utils/categories";
+import { productsBrands } from './../utils/brands';
+import Spinner from "../utils/Spinner";
+import { Card } from "antd";
+
 const AddProducts = () => {
-    // const{ isProductCreated, error} = useSelector(state=> state.addProduct)
-    const [productData, setProductData] = useState({})
-    const [file, setFile ] = useState(null)
-    const dispatch = useDispatch()
+  const [createSports, { isLoading, isError, error, isSuccess }] =
+    useCreateSportsMutation();
 
-    const { register, handleSubmit, formState: { errors }, } = useForm<Inputs>()
-
-
-  const onSubmit: SubmitHandler<Inputs> = (data) =>{
-          const fd = new FormData();
-          fd.append("name", data.name);
-          fd.append("category", data.category);
-          fd.append("description", data.description);
-          fd.append("price", data.price);
-          fd.append("stock", data.stock);
-          fd.append("quantity", data.quantity);
-          fd.append("image", data.image);
-     
+    console.log( "fetching error",error)
+  // show error message
+  let message: string = "";
+  if (error) {
+    const { data } = error as IErrorResponse;
+    message = data?.message as string;
   }
 
-    useEffect(()=> {
-      // if(error) {
-      //   toast.error(error, {position: toast.POSITION.TOP_CENTER})   
-        // dispatch(productClearError())        
-    // }
-    // if( isProductCreated === true) {
-    //     toast.success("You have successfully created product", {position: toast.POSITION.TOP_CENTER})        
-    // }         
-  
-    }, [])
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TProduct>();
 
-    
+  const onSubmit: SubmitHandler<TProduct> = async (data) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("category", data.category);
+    formData.append("description", data.description);
+    formData.append("price", data.price);
+    formData.append("stock", data.stock);   
+    formData.append("brand", data.brand);
+    formData.append("image", data.image[0]);
 
-    
-   
+    try {
+      const result = await createSports(formData as Partial<TProduct>).unwrap();
 
-    
-    return (
-        <div className='bg-[#EEEEEE] w-full h-screen fixed' >
-         
-           <div className="lg:w-full flex justify-center justify-items-center md:w-1/3  mx-auto h-[80vh] border border-[#FFFFFF] m-4  ">           
-            <div className=" w-full h-auto shadow-sm rounded-md  bg-white border border-slate-300">
-                <form onSubmit={handleSubmit(onSubmit)} className='p-6'>
-                  <div> <h1 className='text-green text-3xl text-center mt-5'>Add Product </h1></div>
-                    <div className="my-3">
-                       <label className='block  my-5'> Product Name :  </label>
-                        <input  className='border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full block' {...register("name", { required: true })}  placeholder='Enter Product Name' required  />   
-                             {errors.name && <span>This field is required</span>} 
-                    </div>
-                    <div className="my-4">
-                      <label className=' block  mb-2  my-5' >Category Selection</label>
-                          <select  {...register("category")}  className='border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full block' >
-                           {
-                                categories.map((category) => (                                    
-                                    <option  key={category.value} value={category.value}>{category.label}</option>
-                                ))
-                            }
-                          </select>
-                       
-                    </div>
-                    <div className="my-4">
-                       <label className='my-5  block  mb-2'> Product Description : </label>
-                           <input  className='border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full block' {...register("description", { required: true })}  placeholder='Enter Product Description' required  />    
-                             {errors.description && <span>This field is required</span>}
-                    </div>
-                    <div className="my-4">
-                       <label className='my-5  block  mb-2'> Product price :  </label>
-                        <input  className='border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full block' {...register("price", { required: true })}  placeholder='Enter Product price' required  />    
-                             {errors.price && <span>This field is required</span>}
-                    </div>
-                    <div className="my-4">
-                       <label className='my-5  block  mb-2'> Product Stock : </label>
-                         <input className='border rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full block' {...register("stock", { required: true })}  placeholder='Enter Product stock' required  />    
-                             {errors.stock && <span>This field is required</span>}
-                    </div>
-                    <div className="my-4">
-                         <label className='block w-full cursor-pointer bg-blue-50 h-12 pt-1 text-center text-xl rounded-md' htmlFor="image">Select Image </label>
-                        <input type='file' id='image' {...register("image", { required: true })}  required  hidden />    
-                           
-                    </div>
-                    <div className="my-4">
-                       <label> <button  type="submit" className='text-bold w-full h-10 rounded-sm cursor-pointer bg-slate-400 text-center'> Add a Product</button></label>
-                    </div>
-                </form>
-            </div>
-           </div>   
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message, {
+        position: "top-center",
+      });
+    }
+    if (isSuccess) {
+      toast.success("You have successfully created sports", {
+        position: "top-center",
+      });
+      reset();
+    }
+  }, [isSuccess, isError, message, reset]);
+
+
+
+  return (
+    <Fragment>
+      {isLoading ? (
+        <div className="w-full h-screen flex justify-center justify-items-center">
+          <Spinner />
         </div>
-    );
+      ) : (
+        <div className="bg-[#FFFFFF] w-full h-max-screen rounded-md ">
+          <Card
+            title="Add New Product"
+            className="bg-[#F9F9F9] w-screen  md:mx-auto  md:w-1/2 max-h-full  rounded-md px-4"
+          >
+            <div className="bg-[#F9F9F9] w-full max-w-full h-auto ">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className=""
+                encType="multipart/form-data"
+              >
+                <div className="flex flex-col space-y-2 mb-2">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Product Name
+                  </label>
+                  <input
+                    className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    {...register("name", { required: true })}
+                    placeholder="Enter Product Name"
+                  ></input>
+                  {errors.name && (
+                    <span className="text-red-500">Name is required</span>
+                  )}
+                </div>
+                <div className="flex flex-col space-y-2 mb-2">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Category
+                  </label>
+                  <select
+                    className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    {...register("category", { required: true })}
+                  >
+                    <option value="">select category</option>
+                    {categories.map((category, index) => (
+                      <option key={index} value={category}>
+                        {category}{" "}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.category && (
+                    <span className="text-red-500">Category is required</span>
+                  )}
+                </div>
+                <div className="flex flex-col space-y-2 mb-2">
+                  <label
+                    htmlFor="description"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Description
+                  </label>
+                  <textarea
+                    className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    {...register("description", { required: true })}
+                    placeholder="Enter Product Description"
+                  ></textarea>
+                  {errors.description && (
+                    <span className="text-red-500">
+                      Description is required
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-col space-y-2 mb-2">
+                  <label
+                    htmlFor="price"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Price
+                  </label>
+                  <input
+                    className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    {...register("price", { required: true })}
+                    placeholder="Enter Product Price"
+                  ></input>
+                  {errors.price && (
+                    <span className="text-red-500">Price is required</span>
+                  )}
+                </div>
+                <div className="flex flex-col space-y-2 mb-2">
+                  <label
+                    htmlFor="stock"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Stock
+                  </label>
+                  <input
+                    className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    {...register("stock", { required: true })}
+                    placeholder="Enter Product Stock"
+                  ></input>
+                  {errors.stock && (
+                    <span className="text-red-500">Stock is required</span>
+                  )}
+                </div>
+                <div className="flex flex-col space-y-2 mb-2">
+                  <label
+                    htmlFor="brand"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Brand
+                  </label>
+                  <select
+                    className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    {...register("brand", { required: true })}
+                  >
+                    {productsBrands.map((brand, index) => {
+                      return (
+                        <option key={index} value={brand}>
+                          {brand}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  {errors.brand && (
+                    <span className="text-red-500">Brand is required</span>
+                  )}
+                </div>
+                <div className="flex flex-col space-y-2 mb-2 mt-5 border border-gray-300 rounded-md">
+                  <label
+                    htmlFor="file"
+                    className="flex justify-evenly justify-items-center text-sm font-medium leading-6 text-gray-900"
+                  >
+                    <span className="text-lg">Upload Image : </span>
+                    <span>
+                      <FaCloudUploadAlt className="text-gray-500" size={36} />
+                    </span>
+                  </label>
+                  <input
+                    type="file"
+                    id="file"
+                    {...register("image", { required: true })}
+                    hidden
+                  ></input>
+                  {errors.image && (
+                    <span className="text-red-500">File is required</span>
+                  )}
+                </div>
+                <div className="w-full flex justify-end mt-6">
+                  <input
+                    type="submit"
+                    value="Add Product"
+                    className="text-red-500  bg-slate-200 hover:bg-slate-300 hover:scale-105 px-8 py-2 rounded-full cursor-pointer"
+                  />
+                </div>
+              </form>
+            </div>
+          </Card>
+        </div>
+      )}
+    </Fragment>
+  );
 };
-
 
 export default AddProducts;

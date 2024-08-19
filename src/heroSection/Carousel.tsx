@@ -3,20 +3,20 @@ import { Navigation, Pagination, Scrollbar, Autoplay } from "swiper/modules";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import image1 from "../assets/images/caro1.jpg";
-import image2 from "../assets/images/caro2.avif";
-import image3 from "../assets/images/caro3.avif";
-
-
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
+import { useGetSportsQuery } from "../redux/api/productsApi";
+
+
+
 const Carousel = () => {
+  const { data } = useGetSportsQuery();
   return (
-    <div className="w-full h-[75vh]  flex justify-center justify-items-center">
+    <div className="w-screen md:w-full h-[75vh] relative  flex justify-center justify-items-center">
       <Swiper
         modules={[Navigation, Pagination, Autoplay, Scrollbar]}
         spaceBetween={50}
@@ -24,25 +24,29 @@ const Carousel = () => {
         navigation={true}
         autoplay={true}
         pagination={{ clickable: true }}
-        onSwiper={(swiper) => console.log(swiper)}
-        // onSlideChange={(data) => console.log("slide change", data)}
       >
-        {/* {
-            Array.from([1, 2, 3, 4, 5]).map((item, index) => (
-                <SwiperSlide key={index}>{item}</SwiperSlide>
-            ))
-        }
-       */}
-        <SwiperSlide>
-          <img src={image1} className="w-full h-full object-fit" alt="" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src={image2} className="w-full h-full object-fit" alt="" />
-        </SwiperSlide>
-        <SwiperSlide>
-          {" "}
-          <img src={image3} className="w-full h-full object-fit" alt="" />
-        </SwiperSlide>
+        {data?.data.slice(0, 10).map((product, index) => {
+          return (
+            <SwiperSlide key={index}>
+              <img
+                src={product.image.url}
+                className="w-full h-full object-fit"
+                alt=""
+              />
+              <div className="absolute top-40 translate-x-20">
+                <h1 className="text-red-500 my-2 text-3xl"> {product.name}</h1>
+                <h1 className="text-red-500 my-2  text-2xl">
+                  {" "}
+                  {product.category}
+                </h1>
+                <h1 className="text-red-500 my-2  text-xl">
+                  {" "}
+                  {product.brand}
+                </h1>
+              </div>
+            </SwiperSlide>
+          );
+        })}
         ...
       </Swiper>
     </div>
