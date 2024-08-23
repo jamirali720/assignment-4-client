@@ -14,7 +14,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="bg-[#EEEEEE] w-screen md:w-full h-[80px] flex justify-center  justify-items-center px-5 mb-1">
+    <div className="bg-[#EEEEEE] w-screen md:w-full h-auto md:h-[80px] flex justify-center  justify-items-center px-5 mb-1">
       <div className="flex w-full h-full justify-between items-center">
         <div className="bg-[#FFFFFF] rounded-md  hidden md:block">
           {/* <img src={image} alt="sports" className="size-16 rounded-full" /> */}
@@ -22,13 +22,13 @@ const Navbar = () => {
             to="/"
             className="block text-2xl text-[#434343] font-bold cursor-pointer  p-3 mb-1 hover:text-[#F45634] duration-300 ease-in-out"
           >
-           Sports Club
+           Sporting Store
           </Link>
         </div>
 
         <div>
           <nav>
-            <ul className="flex justify-center justify-items-center  space-x-5 ">
+            <ul className="md:flex justify-center justify-items-center ml-10 md:ml-0 md:space-x-5 ">
               <li>
                 <Link
                   to="/products"
@@ -52,16 +52,7 @@ const Navbar = () => {
                 >
                   About Us
                 </Link>
-              </li>
-              <li>
-                <Link
-                  to="/carousel"
-                  className="font-semibold text-[#434343] text-lg hover:text-[#F45634]  duration-300 ease-in-out"
-                >
-                 Upload
-                </Link>
-              </li>
-
+              </li>             
               <li>
                 <Link
                   to="/cart"

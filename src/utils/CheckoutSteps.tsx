@@ -1,7 +1,6 @@
 import { Steps } from "antd";
 
-import { MdLocalShipping, MdOutlinePayment } from "react-icons/md";
- import { GiConfirmed } from "react-icons/gi";
+
 
 type TProps = {
     currentIndex: number;
@@ -13,16 +12,16 @@ const CheckoutSteps = ({ currentIndex }: TProps) => {
       className="w-full h-auto md:max-h-14 px-4 my-3"
       items={[
         {
-          title: <MdLocalShipping color="red" size={25} />,
+          title: "Shipping",
           description: "Shipping Details",
         },
         {
-          title: <GiConfirmed color="red" size={25} />,
+          title: "Confirm",
           description: "Confirm Order",
         },
         {
-          title: <MdOutlinePayment color="red" size={25} />,
-          description: "Payment",
+          title: "Payment",
+          description: "Payment Success",
         },
       ]}
     />

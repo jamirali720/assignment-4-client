@@ -45,7 +45,7 @@ export type TSingleResponse = {
 export type Inputs = {
   _id?: string;
   id?: string;
-  name: string;
+  name: string; 
   category: string;
   description: string;
   price: number;
@@ -84,9 +84,19 @@ export interface ProductState {
 }
 
 export interface IErrorResponse {
-  error?: string;
-  status: number;
-  data: { [key: string]: string | number | boolean | Array<object> };
+  status: number;  
+  data: {
+    message: string;
+    errorSource?: [{path: string; message: string}];
+    statusCode?: number;
+    stack: string;
+    success: boolean;
+  };
+}
+
+export interface IErrorResponseStatus {
+  error: string;
+  status: string;
 }
 
 export type TQuery = {
@@ -103,7 +113,7 @@ export type TQuery = {
 };
 
 export type TReview = {   
-  _id?:string;
+  id?:string;
   name: string;
   email: string;
   comment: string;
@@ -128,11 +138,63 @@ export type TContact = {
 
 export type TOrder = {
   shippingInfo: IShippingInfo;
-  orderItems: Inputs[];
-  email: string;
+  orderItems: Inputs[]; 
   totalAmount: number;
   itemPrice: number;  
   texPrice: number;
   shippingPrice: number;
   paymentInfo: { id: string; status: string };
 };
+
+
+// order response types from here
+export interface IOrderItems {
+  productName: string;
+  price: number;
+  productId: string;
+  image: string;
+  quantity: number;
+  _id?: string;
+}
+export interface IPayment {
+  paymentInfo: {
+    id: string;
+    status: string;
+  };
+}
+
+export interface IOrder {
+  _id?: string;
+  shippingInfo: IShippingInfo;
+  orderItems: IOrderItems[];
+  paymentInfo: IPayment;
+  orderDate?: Date;
+  orderStatus: string;
+  paidAt: Date;
+  deliveredAt?: Date;
+  cancelledAt?: Date;
+  itemPrice: number;
+  shippingPrice: number;
+  taxPrice: number;
+  totalAmount: number;
+  createdAt:string;
+  updatedAt:string;
+}
+
+
+export interface ITeam {
+  _id?: string;
+  name: string;
+  role: string;
+  image: string;
+}
+
+export interface ITeamResponse {
+  _id: string;
+  name: string;
+  role: string; 
+  image: {
+    url: string;
+    public_id: string;
+  };
+}

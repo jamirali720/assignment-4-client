@@ -1,28 +1,30 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import Products from "../products/Products";
-import ProductDetails from "./../products/ProductDetails";
-import Cart from "../cart/Cart";
-import Payment from "../payment/Payment";
+import Products from "../components/products/Products";
+import ProductDetails from "../components/products/ProductDetails";
+import Cart from "../components/cart/Cart";
+import Payment from "../components/payment/Payment";
 // import Checkout from "../payment/Checkout";
 import App from "../App";
 
-import AddProducts from "../management/AddProducts";
-import Home from "../home/Home";
-import ProductManagement from "../management/ProductManagement";
-import Shipping from "../shipping/Shipping";
-import ConfirmOrders from "../order/OrderSummary";
-import AllProducts from "../management/AllProducts";
-import UpdateProducts from "../management/UpdateProducts";
-import AllOrders from "../order/AllOrders";
+import AddProducts from "../components/management/AddProducts";
+import Home from "../components/home/Home";
+import ProductManagement from "../components/management/ProductManagement";
+import Shipping from "../components/shipping/Shipping";
+import ConfirmOrders from "../components/order/OrderSummary";
+import AllProducts from "../components/management/AllProducts";
+import UpdateProducts from "../components/management/UpdateProducts";
+import AllOrders from "../components/order/AllOrders";
 
-import UpdateOrder from "../order/UpdateOrder";
-import CashOnDelivery from "../payment/CashOnDelivery";
-import CarouselImageUpload from "../heroSection/CarouselImageUpload";
-import PaymentSuccess from "../payment/PaymentSuccess";
-import About from "../about/About";
+import UpdateOrder from "../components/order/UpdateOrder";
+import CashOnDelivery from "../components/payment/CashOnDelivery";
 
-
+import PaymentSuccess from "../components/payment/PaymentSuccess";
+import About from "../components/about/About";
+import Dashboard from "../components/management/Dashboard";
+import AddTeamMember from "../components/team/AddTeamMember";
+import AllTeamMember from "../components/team/AllTeamMember";
+import UpdateTeam from "../components/team/UpdateTeam";
 
 export const router = createBrowserRouter([
   {
@@ -36,10 +38,6 @@ export const router = createBrowserRouter([
       {
         path: "products",
         element: <Products />,
-      },
-      {
-        path: "carousel",
-        element: <CarouselImageUpload />,
       },
 
       {
@@ -80,6 +78,10 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "",
+            element: <Dashboard />,
+          },
+          {
+            path: "add-product",
             element: <AddProducts />,
           },
           {
@@ -95,8 +97,20 @@ export const router = createBrowserRouter([
             element: <AllOrders />,
           },
           {
-            path: "orders/:orderId",
+            path: "order/:orderId",
             element: <UpdateOrder />,
+          },
+          {
+            path: "add-team-member",
+            element: <AddTeamMember />,
+          },
+          {
+            path: "all-teams",
+            element: <AllTeamMember />,
+          },
+          {
+            path: "update-team/:teamId",
+            element: <UpdateTeam />,
           },
         ],
       },

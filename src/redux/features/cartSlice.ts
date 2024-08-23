@@ -3,9 +3,6 @@ import { RootState } from "redux/store";
 import { toast } from "sonner";
 import { Inputs, ProductState } from "types/types";
 
-
-
-
 const initialState: ProductState = {
   cartItems: [],
   totalAmount: 0,
@@ -20,9 +17,9 @@ const initialState: ProductState = {
     address: "",
     city: "",
     pinCode: "",
-  }, 
-  shippingCharge: 0, 
-  texCharge: 0,  
+  },
+  shippingCharge: 0,
+  texCharge: 0,
 };
 
 const cartSlice = createSlice({
@@ -97,10 +94,21 @@ const cartSlice = createSlice({
     },
     clearCartItems: (state) => {
       state.cartItems = [];
-      // toast.success("Cart Items has been removed successfully", {
-      //   position: "top-center",
-      //   duration: 1000,
-      // });
+      state.shippingCharge = 0;
+      state.shippingInfo = {
+        name: "",
+        email: "",
+        state: "",
+        zip: "",
+        country: "",
+        phoneNo: "",
+        address: "",
+        city: "",
+        pinCode: "",
+      };
+      state.texCharge = 0;
+      state.subtotal = 0;
+      state.totalAmount = 0;
     },
     setTotalAmount: (state, action) => {
       state.totalAmount = action.payload.totalAmount;
@@ -108,9 +116,9 @@ const cartSlice = createSlice({
     },
     setCharge: (state, action) => {
       state.shippingCharge = action.payload.shippingCharge;
-      state.texCharge = action.payload.texCharge;     
+      state.texCharge = action.payload.texCharge;
     },
-    
+
     setShippingInfo: (state, action) => {
       const shippingObject = {
         name: action.payload.name,
@@ -124,9 +132,8 @@ const cartSlice = createSlice({
         pinCode: action.payload.pinCode,
       };
       state.shippingInfo = shippingObject;
-    },    
+    },
   },
-   
 });
 
 export const {
@@ -142,5 +149,3 @@ export const {
 export default cartSlice.reducer;
 
 export const cartItems = (state: RootState) => state.cart.cartItems;
-
-

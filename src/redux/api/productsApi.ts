@@ -12,7 +12,9 @@ import {
 // Define a service using a base URL and expected endpoints
 export const productsApi = createApi({
   reducerPath: "productsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/sports" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://assignment-4-server-bice.vercel.app/api/sports",   
+  }),
   tagTypes: ["sports"],
   endpoints: (builder) => ({
     createSports: builder.mutation<TProduct, Partial<TProduct>>({
@@ -27,8 +29,9 @@ export const productsApi = createApi({
     }),
     getAllSports: builder.query<TResponse, TQuery>({
       query: (query) => {
+        const link = `/sports?name=${query.name}&page=${query.page}&limit=${query.limit}&category=${query.category}&price[gte]=${query.minPrice}&price[lte]=${query.maxPrice}&brand=${query.brand}&ratings[gte]=${query.ratings}&sort=${query.sort}`;
         return {
-          url: `/sports?name=${query.name}&page=${query.page}&limit=${query.limit}&category=${query.category}&price[gte]=${query.minPrice}&price[lte]=${query.maxPrice}&brand=${query.brand}&ratings[gte]=${query.ratings}&sort=${query.sort}`,
+          url: link,
           method: "GET",
         };
       },
@@ -45,8 +48,6 @@ export const productsApi = createApi({
     }),
     updatedSingleSports: builder.mutation<TSingleResponse, Partial<TProduct>>({
       query: (data) => {
-        console.log("check api data ", data);
-
         return {
           url: `/update-sport`,
           method: "PUT",
@@ -73,6 +74,15 @@ export const productsApi = createApi({
       },
       providesTags: ["sports"],
     }),
+    getLatestSports: builder.query<TResponse, void>({
+      query: () => {
+        return {
+          url: `/latest-sports`,
+          method: "GET",
+        };
+      },
+      providesTags: ["sports"],
+    }),
     updatedStockWithCashOnDelivery: builder.mutation({
       query: (body) => {
         return {
@@ -84,9 +94,9 @@ export const productsApi = createApi({
       invalidatesTags: ["sports"],
     }),
     createReview: builder.mutation<TResponse, TReview>({
-      query: ({ _id, ...data }) => {
+      query: ({ id, ...data }) => {
         return {
-          url: `/create-review/${_id}`,
+          url: `/create-review/${id}`,
           method: "PUT",
           body: data,
         };
@@ -115,4 +125,5 @@ export const {
   useDeletedSingleSportsMutation,
   useContactEmailSendMutation,
   useUpdatedStockWithCashOnDeliveryMutation,
+  useGetLatestSportsQuery,
 } = productsApi;

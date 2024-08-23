@@ -3,12 +3,13 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // Define a service using a base URL and expected endpoints
 export const ordersApi = createApi({
   reducerPath: "ordersApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/orders" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://assignment-4-server-bice.vercel.app/api/orders",
+  }),
   tagTypes: ["orders"],
   endpoints: (builder) => ({
     createOrder: builder.mutation({
       query: (data) => {
-        console.log(data);
         return {
           url: "/create-order",
           method: "POST",
@@ -28,16 +29,16 @@ export const ordersApi = createApi({
     }),
     updatedSingleOrder: builder.mutation({
       query: (data) => {
-        const { id, ...body } = data;
+        const { orderId, ...status } = data;
         return {
-          url: `/update-order/${id}`,
+          url: `/update-order/${orderId}`,
           method: "PUT",
-          body,
+          body: status,
         };
       },
       invalidatesTags: ["orders"],
     }),
-   
+
     deletedSingleOder: builder.mutation({
       query: (id) => {
         return {
@@ -50,7 +51,7 @@ export const ordersApi = createApi({
     getAllOrders: builder.query({
       query: (query) => {
         return {
-          url: `/orders?email=${query.email}`,
+          url: `/orders?email=${query?.email}`,
           method: "GET",
         };
       },

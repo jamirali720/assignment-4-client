@@ -1,11 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { productsApi } from "../api/productsApi";
-import { Inputs } from "types/types";
-import { RootState } from "redux/store";
 
-type TState = {
-  filteredProducts: Inputs[];
-  allProducts: Inputs[];
+
+type TState = {  
   searchTerm: string;
   category: string;
   minPrice: number;
@@ -17,9 +13,7 @@ type TState = {
   sort: string;
 };
 
-const initialState: TState = {
-  filteredProducts: [], 
-  allProducts: [],
+const initialState: TState = {  
   searchTerm: "",
   category: "All",
   minPrice: 0,
@@ -74,20 +68,7 @@ const filterSlice = createSlice({
       state.searchTerm = "";
     },
   },
-  extraReducers: (builder) => {
-    builder.addMatcher(
-      productsApi.endpoints.getAllSports.matchFulfilled,
-      (state, action) => {       
-        state.filteredProducts = [...action.payload.data];
-      }
-    );   
-    builder.addMatcher(
-      productsApi.endpoints.getSports.matchFulfilled,
-      (state, action) => {       
-        state.allProducts = [...action.payload.data];       
-      }
-    );   
-  },
+ 
 });
 
 export const {
@@ -104,8 +85,7 @@ export const {
 } = filterSlice.actions;
 
 export default filterSlice.reducer;
-export const filteredProducts = (state: RootState) => state.filter.filteredProducts;
-export const allProducts = (state: RootState) => state.filter.allProducts;
+
 
 
 
