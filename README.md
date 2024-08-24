@@ -59,22 +59,10 @@
 - A user / buyer/player  can process payment by cart checkout ;
  
 
-### 1. Middleware and Error Handling:
-* when finding bike or other information, "No sports Data Found" error message will be show , if no data available.
+### 1. Update product stock:
+* when  A user / buyer/player purchase a goods of sporting and payment cash on delivery, the product's stock will be reduced at once.
 
-### 2. Error Handling:
-* ErrorMessage will provide following as error message.
-```javascript
-[
-  {
-    "path": "",
-    "message": "Error message"
-  }
-]
-
-```
-
-
+* when  A user / buyer/player purchase a goods of sporting and pay by online payment method with stripe , the product's stock will not be reduced . But will be created order and saved in database. After that when a buyer update order status by shipped, then product's stock will be reduced.
 
 ### 3. Not Found Route:
 * a global "Not Found" handler for unmatched routes   has been handled. When a route is not found, respond with a generic message: "Not Found."
