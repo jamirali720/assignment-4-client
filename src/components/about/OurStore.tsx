@@ -19,7 +19,7 @@ const OurStore = () => {
           <h1 className="font-bold text-2xl text-slate-900">Store Location </h1>
           <div className="">
             <p className="my-3">
-              <strong>Store Name :</strong> Sports Club
+              <strong>Store Name :</strong> Sporting Store
             </p>
             <p className="my-3">
               <strong>Address :</strong>
@@ -101,7 +101,7 @@ const OurStore = () => {
         <div className="">
           <div className="md:mb-6 text-center">
             <address className="text-2xl font-bold text-slate-800">           
-              Sports Club Google Map Address
+              Sporting Store Google Map Address
             </address>
           </div>
           <div className="w-full h-auto md:h-full">

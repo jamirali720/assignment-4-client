@@ -25,6 +25,7 @@ import Dashboard from "../components/management/Dashboard";
 import AddTeamMember from "../components/team/AddTeamMember";
 import AllTeamMember from "../components/team/AllTeamMember";
 import UpdateTeam from "../components/team/UpdateTeam";
+import NotFound from "../components/notFound/NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -113,6 +114,10 @@ export const router = createBrowserRouter([
             element: <UpdateTeam />,
           },
         ],
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       },
     ],
   },

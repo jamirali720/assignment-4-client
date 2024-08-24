@@ -73,7 +73,7 @@ const MIssionAndVision = () => {
                 Driving Innovation :
               </h1>
               <h1 className="text-5xl font-bold text-[#0D0E10] my-4">
-                Our Vision at Sports Club
+                Our Vision at Sporting Store
               </h1>
               <div className="">
                 <p className="text-justify">

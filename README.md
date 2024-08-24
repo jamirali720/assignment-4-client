@@ -1,30 +1,90 @@
-# React + TypeScript + Vite
+# assignment-4
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Introduction of this project:
 
-Currently, two official plugins are available:
+- This project is for sporting store
+  - Any one can buy sporting goods for his necessary.
+  - after that he can pay for payment for his purchase of goods online payment or cash on delivery
+- What I have utilize in this project:
+  - Express js, Typescript, Node js, Mongoose, Mongodb.
+  - Dependencies:  nodemon, cors, Dotenv, react-helmet react-router-dom  react-redux RTK-query.
+ 
+- To use this project:
+  - You have to install dependencies by
+  ```javascript
+  npm install
+  ```
+- To start this project:
+  - You have to run this command 
+  ```javascript
+  npm run dev
+  ```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Project Links: 
+* [Live Deployment Link of vercel (Client)](https://assignment-4-client-theta.vercel.app/)
+* [Live Deployment Link of vercel (Server)](https://assignment-4-server-bice.vercel.app/)
 
-## Expanding the ESLint configuration
+* [GitHub Repository Links (Server)](https://github.com/jamirali720/assignment-4-client)
+* [GitHub Repository Links (Server)](https://github.com/jamirali720/assignemnt-4-server)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- Configure the top-level `parserOptions` property like this:
+## Technology Stack:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- As Programming Language: TypeScript
+- AS Web Framework: Express.js
+- As Object Dada Model : Mongoose for MongoDB
+
+# There are three models in this project server
+
+1. Sport Model
+2. Order Model
+3. Team Model
+
+# API Endpoints:
+
+-products Routes:
+
+1. Home : - Route: : A user / buyer/player can visit and search product by category :
+
+2. All Products: Route: /products: A user /player can visit all products, search by name, and filter by brand, price, and ratings 
+
+3. Manage products: Route: /manage-products
+
+- A user / buyer/player can gets all products list with pagination and add product, update product and delete product;
+- A user / buyer/player can gets all team members list with pagination and add team member, update member and delete member;
+- A user / buyer/player can get all orders list, update orders status and delete orders;
+
+3. Shopping Cart: Route: /cart
+
+- A user / buyer/player  can process payment by cart checkout ;
+ 
+
+### 1. Middleware and Error Handling:
+* when finding bike or other information, "No sports Data Found" error message will be show , if no data available.
+
+### 2. Error Handling:
+* ErrorMessage will provide following as error message.
+```javascript
+[
+  {
+    "path": "",
+    "message": "Error message"
+  }
+]
+
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+
+### 3. Not Found Route:
+* a global "Not Found" handler for unmatched routes   has been handled. When a route is not found, respond with a generic message: "Not Found."
+```javascript
+{
+  "success": false,
+  "statusCode": 404,
+  "message": "Oops! Route Not Found or Invalid Route!"
+}
+
+```
+
+

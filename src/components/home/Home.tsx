@@ -14,6 +14,9 @@ import LatestProducts from "./LatestProducts";
 import { Button } from "antd";
 import MetaData from "../MetaData/MetaData";
 
+import {motion} from "framer-motion"
+
+
 const Home = () => {
   const dispatch = useAppDispatch();
   const { category, brand } = useAppSelector((state) => state.filter);
@@ -53,10 +56,18 @@ const Home = () => {
       ) : (
         <div className="bg-[#FFFFFF] w-screen md:w-full px-2">
           <section className="my-10">
-            <h1 className="text-start text-3xl font-bold">
-              {" "}
+            <motion.h1
+              animate={{ x: [50, 150, 50], opacity: 1, scale: 1 }}
+              transition={{
+                duration: 5,
+                delay: 0.3,
+                ease: [0.5, 0.71, 1, 1.5],
+              }}
+              initial={{ opacity: 0, scale: 0.5 }}
+              className="text-start text-3xl font-bold"
+            >
               Latest Features Products
-            </h1>
+            </motion.h1>
             <LatestProducts />
           </section>
           <div className="w-full  p-3 mx-auto my-4">

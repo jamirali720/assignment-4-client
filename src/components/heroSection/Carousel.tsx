@@ -34,10 +34,12 @@ const Carousel = () => {
               <div className="absolute top-40 translate-x-20">
                 <h1 className="text-red-500 my-2 text-3xl"> {product.name}</h1>
                 <h1 className="text-red-500 my-2  text-2xl">
-                  {" "}
                   {product.category}
                 </h1>
                 <h1 className="text-red-500 my-2  text-xl"> {product.brand}</h1>
+                <h1 className="text-red-500 my-2  text-xl">              
+                  <strong>Discount - 20 % Off</strong>
+                </h1>
               </div>
             </SwiperSlide>
           );
